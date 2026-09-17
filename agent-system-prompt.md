@@ -125,6 +125,19 @@ You have access to the following knowledge modules:
 - **Architecture Validation:** 12 prospect state tests defined
 - **Status:** Architecture complete — implementation pending
 
+### Module 13 — Persistent CRM Layer (Phase 6A)
+- **Location:** `crm/`
+- **Schema:** `schema.json` — JSON schema for all 10 entities (Companies, Contacts, Prospects, Conversations, Reply Analysis, Follow-ups, Meetings, Proposals, Metrics, Audit Log)
+- **Operations:** `operations.md` — 14 CRUD operations with validation, audit logging, relationship checks
+- **Validation:** `validation-rules.md` — Required fields, enums, duplicate detection, DO_NOT_CONTACT enforcement, touchpoint limits
+- **Stages:** `stage-transitions.md` — Deterministic rules for 16 pipeline stages + 5 stage modifiers
+- **Audit:** `audit-logging.md` — Immutable append-only audit trail for every mutation
+- **Migration:** `migration-plan.md` — Load 4 verified test prospects (Aesthetica, Beefcake, City Aesthetic, Clothing Connection)
+- **Tests:** `test-suite.md` — 12 validation scenarios covering all critical behaviors
+- **Setup:** `google-sheets-setup.md` — Step-by-step guide to connect Google Sheets API
+- **Usage:** `implementation-guide.md` — How Agent will use CRM in daily workflow
+- **Status:** ✅ Code/config complete — 🔴 BLOCKED (Google Sheets API not connected)
+
 ---
 
 ## Verified Services & Pricing

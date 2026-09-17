@@ -1,9 +1,10 @@
 # RIAJUL AI CLIENT ACQUISITION AGENT — Dashboard
 
-## Status: 🏗️ PHASE 6 IN PROGRESS — Integration & Operational Architecture
+## Status: 🔴 PHASE 6A — Persistent CRM (Code-Ready, Deployment Blocked)
 
-**System Status:** Knowledge Base ✅ | Pricing ✅ | Playbook ✅ | Outreach Validated ✅ | Follow-Up + Reply Intelligence ✅ | Integration Architecture ✅
-**Next Step:** Implement persistent CRM (Phase 6C) → Connect email → Go live
+**System Status:** Knowledge Base ✅ | Pricing ✅ | Playbook ✅ | Outreach Validated ✅ | Follow-Up + Reply Intelligence ✅ | Integration Architecture ✅ | CRM Code ✅
+**Blocker:** 🔴 Google Sheets API NOT connected — cannot execute real CRM operations
+**Next Step:** Connect Google Sheets API → Initialize CRM → Migrate test data → Run validation tests
 
 ---
 
@@ -76,7 +77,7 @@
 
 | Phase | What | Dependencies | Status |
 |-------|------|-------------|--------|
-| 6A | Persistent CRM (Google Sheets) | None | 📋 Schema defined |
+| 6A | Persistent CRM (Google Sheets) | Google Sheets API | ✅ Code/config ready — 🔴 Blocked (API not connected) |
 | 6B | Email Integration (Gmail) | 6A | 🔴 Not started |
 | 6C | Operational Dashboard | 6A, 6B | 🔴 Not started |
 | 6D | Advanced Integrations | 6A-6C | 🔴 Not started |
@@ -221,6 +222,7 @@ MEETING → PROPOSAL → WON / LOST / NURTURE
 | `08_RULES/` | Brand voice, accuracy, outreach rules |
 | `09_CRM/` | Pipeline schema |
 | `workflows/` | 11 workflow files (daily, research, reply intelligence, CRM, playbook, follow-up intelligence, validation tests, integration architecture, CRM persistence, operational metrics, architecture validation) |
+| `crm/` | 10 CRM implementation files (schema, operations, validation, stages, audit, migration, tests, setup guide, usage guide, README) |
 | `audits/` | Knowledge base audit, portfolio intelligence, 5-prospect test, outreach validation |
 
 ---
