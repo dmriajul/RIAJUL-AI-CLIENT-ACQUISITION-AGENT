@@ -1,0 +1,1104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "riajul-crm-schema-v1",
+  "title": "Riajul Client Acquisition CRM Schema",
+  "description": "Canonical schema for persistent CRM storage (10 sheets)",
+  "version": "1.0.0",
+  "created": "2026-09-17",
+
+  "entities": {
+
+    "Company": {
+      "sheet_name": "Companies",
+      "description": "One row per company/brand",
+      "id_field": "Company ID",
+      "id_prefix": "COMP",
+      "unique_constraints": ["Company Name", "Website"],
+      "fields": {
+        "Company ID": {
+          "type": "string",
+          "required": true,
+          "auto_generated": true,
+          "format": "COMP-{NNN}",
+          "description": "Unique identifier"
+        },
+        "Company Name": {
+          "type": "string",
+          "required": true,
+          "unique": true,
+          "description": "Company/brand name"
+        },
+        "Website": {
+          "type": "url",
+          "required": false,
+          "unique": true,
+          "description": "Company website URL"
+        },
+        "Domain": {
+          "type": "string",
+          "required": false,
+          "derived_from": "Website",
+          "description": "Extracted domain for duplicate detection"
+        },
+        "Industry": {
+          "type": "string",
+          "required": false,
+          "description": "Business industry"
+        },
+        "Country": {
+          "type": "string",
+          "required": false,
+          "description": "Business location country"
+        },
+        "City": {
+          "type": "string",
+          "required": false,
+          "description": "Business location city"
+        },
+        "Company Size": {
+          "type": "string",
+          "required": false,
+          "enum": ["1-10", "11-50", "51-200", "201-500", "500+"],
+          "description": "Employee count range"
+        },
+        "LinkedIn Company": {
+          "type": "url",
+          "required": false,
+          "description": "Company LinkedIn page"
+        },
+        "Instagram": {
+          "type": "string",
+          "required": false,
+          "description": "Company Instagram handle"
+        },
+        "Facebook": {
+          "type": "string",
+          "required": false,
+          "description": "Company Facebook page"
+        },
+        "ICP Segment": {
+          "type": "string",
+          "required": false,
+          "enum": ["Primary", "Secondary", "Tertiary"],
+          "description": "Target segment"
+        },
+        "Notes": {
+          "type": "string",
+          "required": false,
+          "description": "Company-level notes"
+        },
+        "Status": {
+          "type": "string",
+          "required": true,
+          "default": "Active",
+          "enum": ["Active", "Inactive", "Duplicate", "Archived"],
+          "description": "Record status"
+        },
+        "Created Date": {
+          "type": "date",
+          "required": true,
+          "auto_generated": true,
+          "description": "When company was added"
+        },
+        "Updated Date": {
+          "type": "date",
+          "required": true,
+          "auto_generated": true,
+          "auto_update": true,
+          "description": "Last update timestamp"
+        },
+        "Created By": {
+          "type": "string",
+          "required": true,
+          "default": "Agent",
+          "description": "Who created this record"
+        },
+        "Source": {
+          "type": "string",
+          "required": false,
+          "description": "Data source (e.g. portfolio.riajultech.com, web research)"
+        }
+      },
+      "relationships": {
+        "has_many_contacts": {
+          "entity": "Contact",
+          "foreign_key": "Company ID"
+        }
+      }
+    },
+
+    "Contact": {
+      "sheet_name": "Contacts",
+      "description": "One row per person (multiple contacts per company allowed)",
+      "id_field": "Contact ID",
+      "id_prefix": "CONT",
+      "unique_constraints": ["Email"],
+      "fields": {
+        "Contact ID": {
+          "type": "string",
+          "required": true,
+          "auto_generated": true,
+          "format": "CONT-{NNN}",
+          "description": "Unique identifier"
+        },
+        "Company ID": {
+          "type": "string",
+          "required": true,
+          "foreign_key": "Company.Company ID",
+          "description": "FK to Companies sheet"
+        },
+        "Contact Name": {
+          "type": "string",
+          "required": false,
+          "description": "Person's name"
+        },
+        "Role": {
+          "type": "string",
+          "required": false,
+          "description": "Job title"
+        },
+        "Email": {
+          "type": "email",
+          "required": false,
+          "unique": true,
+          "description": "Email address"
+        },
+        "Email Verified": {
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Is email verified?"
+        },
+        "Email Verified Date": {
+          "type": "date",
+          "required": false,
+          "description": "When email was verified"
+        },
+        "LinkedIn": {
+          "type": "url",
+          "required": false,
+          "description": "LinkedIn profile URL"
+        },
+        "Decision Maker Status": {
+          "type": "string",
+          "required": false,
+          "default": "Unknown",
+          "enum": ["Decision-maker", "Influencer", "Gatekeeper", "Unknown"],
+          "description": "Role in decision process"
+        },
+        "Referred By": {
+          "type": "string",
+          "required": false,
+          "description": "Who referred this contact"
+        },
+        "Notes": {
+          "type": "string",
+          "required": false,
+          "description": "Contact-level notes"
+        },
+        "Status": {
+          "type": "string",
+          "required": true,
+          "default": "Active",
+          "enum": ["Active", "Inactive", "DO_NOT_CONTACT", "Archived"],
+          "description": "Record status"
+        },
+        "DO_NOT_CONTACT Date": {
+          "type": "date",
+          "required": false,
+          "description": "When DO_NOT_CONTACT was set"
+        },
+        "DO_NOT_CONTACT Reason": {
+          "type": "string",
+          "required": false,
+          "description": "Why DO_NOT_CONTACT was set"
+        },
+        "Created Date": {
+          "type": "date",
+          "required": true,
+          "auto_generated": true,
+          "description": "When contact was added"
+        },
+        "Updated Date": {
+          "type": "date",
+          "required": true,
+          "auto_generated": true,
+          "auto_update": true,
+          "description": "Last update timestamp"
+        },
+        "Created By": {
+          "type": "string",
+          "required": true,
+          "default": "Agent",
+          "description": "Who created this record"
+        },
+        "Source": {
+          "type": "string",
+          "required": false,
+          "description": "Data source"
+        }
+      },
+      "relationships": {
+        "belongs_to_company": {
+          "entity": "Company",
+          "foreign_key": "Company ID"
+        },
+        "has_many_prospects": {
+          "entity": "Prospect",
+          "foreign_key": "Contact ID"
+        }
+      }
+    },
+
+    "Prospect": {
+      "sheet_name": "Prospects",
+      "description": "One row per contact+service combination (pipeline tracking)",
+      "id_field": "Prospect ID",
+      "id_prefix": "PRO",
+      "unique_constraints": ["Contact ID + Service"],
+      "fields": {
+        "Prospect ID": {
+          "type": "string",
+          "required": true,
+          "auto_generated": true,
+          "format": "PRO-{NNN}",
+          "description": "Unique identifier"
+        },
+        "Contact ID": {
+          "type": "string",
+          "required": true,
+          "foreign_key": "Contact.Contact ID",
+          "description": "FK to Contacts sheet"
+        },
+        "Company ID": {
+          "type": "string",
+          "required": true,
+          "foreign_key": "Company.Company ID",
+          "description": "FK to Companies sheet (denormalized for quick access)"
+        },
+        "Priority": {
+          "type": "string",
+          "required": true,
+          "enum": ["A", "B", "C"],
+          "description": "A=High, B=Medium, C=Low"
+        },
+        "Priority Reason": {
+          "type": "string",
+          "required": true,
+          "description": "Evidence-based justification for priority"
+        },
+        "ICP Segment": {
+          "type": "string",
+          "required": true,
+          "enum": ["Primary", "Secondary", "Tertiary"],
+          "description": "Which ICP segment"
+        },
+        "Service": {
+          "type": "string",
+          "required": true,
+          "enum": [
+            "Meta Ads Management",
+            "Social Media Management",
+            "Google Ads Management",
+            "SEO",
+            "Local SEO & ORM",
+            "Analytics & Tracking",
+            "CRO",
+            "Combined Package"
+          ],
+          "description": "Relevant service"
+        },
+        "Opportunity": {
+          "type": "string",
+          "required": true,
+          "description": "Identified evidence-based opportunity"
+        },
+        "Research Evidence": {
+          "type": "string",
+          "required": true,
+          "description": "Verified observations from research"
+        },
+        "Portfolio Proof": {
+          "type": "string",
+          "required": true,
+          "description": "Relevant case studies to reference"
+        },
+        "Outreach Channel": {
+          "type": "string",
+          "required": false,
+          "enum": ["Email", "LinkedIn", "Both"],
+          "description": "Preferred channel"
+        },
+        "Outreach Angle": {
+          "type": "string",
+          "required": false,
+          "description": "Personalization approach"
+        },
+        "Pipeline Stage": {
+          "type": "string",
+          "required": true,
+          "default": "NEW",
+          "enum": [
+            "NEW",
+            "RESEARCHED",
+            "QUALIFIED",
+            "OUTREACH_READY",
+            "CONTACTED",
+            "FOLLOW-UP 1",
+            "FOLLOW-UP 2",
+            "REPLIED",
+            "CONVERSATION",
+            "MEETING",
+            "PROPOSAL",
+            "NEGOTIATION",
+            "WON",
+            "LOST",
+            "NURTURE",
+            "DISQUALIFIED"
+          ],
+          "description": "Current pipeline stage"
+        },
+        "Stage Modifier": {
+          "type": "string",
+          "required": false,
+          "enum": [
+            "DO_NOT_CONTACT",
+            "REFERRED",
+            "MULTI_CONTACT",
+            "RE_ENGAGING",
+            "AT_RISK"
+          ],
+          "description": "Special status modifier"
+        },
+        "Interest Level": {
+          "type": "string",
+          "required": false,
+          "enum": ["High", "Medium", "Low", "None"],
+          "description": "Current interest level"
+        },
+        "Sentiment": {
+          "type": "string",
+          "required": false,
+          "enum": ["Positive", "Neutral", "Negative", "Mixed"],
+          "description": "Latest interaction sentiment"
+        },
+        "Objection": {
+          "type": "string",
+          "required": false,
+          "description": "Current objection type"
+        },
+        "Buying Signal": {
+          "type": "string",
+          "required": false,
+          "description": "Detected buying signals"
+        },
+        "Total Touchpoints": {
+          "type": "integer",
+          "required": false,
+          "default": 0,
+          "description": "Total messages sent across all channels"
+        },
+        "Email Touchpoints": {
+          "type": "integer",
+          "required": false,
+          "default": 0,
+          "description": "Email messages sent"
+        },
+        "LinkedIn Touchpoints": {
+          "type": "integer",
+          "required": false,
+          "default": 0,
+          "description": "LinkedIn messages sent"
+        },
+        "Last Contact Date": {
+          "type": "date",
+          "required": false,
+          "description": "Date of last outreach"
+        },
+        "Last Reply Date": {
+          "type": "date",
+          "required": false,
+          "description": "Date of last reply received"
+        },
+        "Next Follow-up Date": {
+          "type": "date",
+          "required": false,
+          "description": "When next follow-up is due"
+        },
+        "Stage History": {
+          "type": "string",
+          "required": false,
+          "description": "JSON of all stage transitions [{stage, date, reason}]"
+        },
+        "Created Date": {
+          "type": "date",
+          "required": true,
+          "auto_generated": true,
+          "description": "When prospect was added"
+        },
+        "Updated Date": {
+          "type": "date",
+          "required": true,
+          "auto_generated": true,
+          "auto_update": true,
+          "description": "Last update timestamp"
+        },
+        "Owner": {
+          "type": "string",
+          "required": true,
+          "default": "Riajul",
+          "description": "Who owns this prospect"
+        },
+        "Created By": {
+          "type": "string",
+          "required": true,
+          "default": "Agent",
+          "description": "Who created this record"
+        },
+        "Source": {
+          "type": "string",
+          "required": false,
+          "description": "Data source"
+        }
+      },
+      "relationships": {
+        "belongs_to_contact": {
+          "entity": "Contact",
+          "foreign_key": "Contact ID"
+        },
+        "belongs_to_company": {
+          "entity": "Company",
+          "foreign_key": "Company ID"
+        },
+        "has_many_conversations": {
+          "entity": "Conversation",
+          "foreign_key": "Prospect ID"
+        },
+        "has_many_followups": {
+          "entity": "Followup",
+          "foreign_key": "Prospect ID"
+        },
+        "has_many_meetings": {
+          "entity": "Meeting",
+          "foreign_key": "Prospect ID"
+        },
+        "has_many_proposals": {
+          "entity": "Proposal",
+          "foreign_key": "Prospect ID"
+        }
+      },
+      "stage_transitions": {
+        "NEW": ["RESEARCHED", "DISQUALIFIED"],
+        "RESEARCHED": ["QUALIFIED", "DISQUALIFIED"],
+        "QUALIFIED": ["OUTREACH_READY", "DISQUALIFIED"],
+        "OUTREACH_READY": ["CONTACTED", "DISQUALIFIED"],
+        "CONTACTED": ["FOLLOW-UP 1", "REPLIED", "NURTURE", "DISQUALIFIED"],
+        "FOLLOW-UP 1": ["FOLLOW-UP 2", "REPLIED", "NURTURE", "DISQUALIFIED"],
+        "FOLLOW-UP 2": ["REPLIED", "NURTURE", "DISQUALIFIED"],
+        "REPLIED": ["CONVERSATION", "QUALIFIED", "NURTURE", "LOST", "DISQUALIFIED"],
+        "CONVERSATION": ["MEETING", "PROPOSAL", "NURTURE", "LOST"],
+        "MEETING": ["PROPOSAL", "NURTURE", "LOST"],
+        "PROPOSAL": ["NEGOTIATION", "WON", "LOST", "NURTURE"],
+        "NEGOTIATION": ["WON", "LOST", "NURTURE"],
+        "WON": [],
+        "LOST": ["NURTURE"],
+        "NURTURE": ["RESEARCHED", "QUALIFIED", "OUTREACH_READY", "LOST"],
+        "DISQUALIFIED": []
+      },
+      "rules": {
+        "max_email_touchpoints": 4,
+        "max_linkedin_touchpoints": 3,
+        "max_combined_touchpoints": 7,
+        "nurture_reengage_after_days": {
+          "A": 30,
+          "B": 60,
+          "C": 90
+        },
+        "stale_after_days": 30,
+        "follow_up_1_after_days": 5,
+        "follow_up_2_after_days": 5,
+        "follow_up_3_after_days": 7
+      }
+    },
+
+    "Conversation": {
+      "sheet_name": "Conversations",
+      "description": "One row per message sent or received",
+      "id_field": "Conversation ID",
+      "id_prefix": "CONV",
+      "fields": {
+        "Conversation ID": {
+          "type": "string",
+          "required": true,
+          "auto_generated": true,
+          "format": "CONV-{NNN}",
+          "description": "Unique identifier"
+        },
+        "Prospect ID": {
+          "type": "string",
+          "required": true,
+          "foreign_key": "Prospect.Prospect ID",
+          "description": "FK to Prospects sheet"
+        },
+        "Message Type": {
+          "type": "string",
+          "required": true,
+          "enum": ["Outbound", "Inbound"],
+          "description": "Direction of message"
+        },
+        "Message Channel": {
+          "type": "string",
+          "required": true,
+          "enum": ["Email", "LinkedIn"],
+          "description": "Communication channel"
+        },
+        "Message Date": {
+          "type": "date",
+          "required": true,
+          "description": "When message was sent/received"
+        },
+        "Message Subject": {
+          "type": "string",
+          "required": false,
+          "description": "Email subject or message title"
+        },
+        "Message Content": {
+          "type": "string",
+          "required": true,
+          "description": "Full message content"
+        },
+        "Follow-up Number": {
+          "type": "integer",
+          "required": false,
+          "description": "Which follow-up this is (1, 2, 3) or null for initial"
+        },
+        "Human Approved": {
+          "type": "boolean",
+          "required": true,
+          "default": false,
+          "description": "Was this approved by human?"
+        },
+        "Approved Date": {
+          "type": "date",
+          "required": false,
+          "description": "When human approved"
+        },
+        "Sent Date": {
+          "type": "date",
+          "required": false,
+          "description": "When message was actually sent"
+        },
+        "Status": {
+          "type": "string",
+          "required": true,
+          "default": "Draft",
+          "enum": ["Draft", "Approved", "Sent", "Failed", "Received"],
+          "description": "Message status"
+        },
+        "Notes": {
+          "type": "string",
+          "required": false,
+          "description": "Additional notes"
+        },
+        "Created Date": {
+          "type": "date",
+          "required": true,
+          "auto_generated": true
+        }
+      }
+    },
+
+    "ReplyAnalysis": {
+      "sheet_name": "Reply Analysis",
+      "description": "One row per reply analyzed",
+      "id_field": "Analysis ID",
+      "id_prefix": "ANAL",
+      "fields": {
+        "Analysis ID": {
+          "type": "string",
+          "required": true,
+          "auto_generated": true,
+          "format": "ANAL-{NNN}",
+          "description": "Unique identifier"
+        },
+        "Conversation ID": {
+          "type": "string",
+          "required": true,
+          "foreign_key": "Conversation.Conversation ID",
+          "description": "FK to Conversations sheet"
+        },
+        "Prospect ID": {
+          "type": "string",
+          "required": true,
+          "foreign_key": "Prospect.Prospect ID",
+          "description": "FK to Prospects sheet"
+        },
+        "Reply Date": {
+          "type": "date",
+          "required": true,
+          "description": "When reply was received"
+        },
+        "Reply Content": {
+          "type": "string",
+          "required": true,
+          "description": "Full reply content"
+        },
+        "Classification": {
+          "type": "string",
+          "required": true,
+          "enum": [
+            "INTERESTED",
+            "QUALIFIED",
+            "MEETING_REQUEST",
+            "PRICING",
+            "QUESTION",
+            "OBJECTION",
+            "NOT_NOW",
+            "NOT_INTERESTED",
+            "WRONG_PERSON",
+            "REFERRAL",
+            "ALREADY_HAVE_PROVIDER",
+            "NEEDS_MORE_INFORMATION",
+            "UNCLEAR"
+          ],
+          "description": "Reply classification (13 categories)"
+        },
+        "Sentiment": {
+          "type": "string",
+          "required": true,
+          "enum": ["Positive", "Neutral", "Negative", "Mixed"],
+          "description": "Reply sentiment"
+        },
+        "Interest Level": {
+          "type": "string",
+          "required": true,
+          "enum": ["High", "Medium", "Low", "None"],
+          "description": "Detected interest level"
+        },
+        "Objection": {
+          "type": "string",
+          "required": false,
+          "description": "Type of objection if any"
+        },
+        "Buying Signal": {
+          "type": "string",
+          "required": false,
+          "description": "Detected buying signals"
+        },
+        "Requested Info": {
+          "type": "string",
+          "required": false,
+          "description": "What prospect asked for"
+        },
+        "Urgency": {
+          "type": "string",
+          "required": true,
+          "enum": ["High", "Medium", "Low", "None"],
+          "description": "Detected urgency"
+        },
+        "Recommended Action": {
+          "type": "string",
+          "required": true,
+          "description": "AI recommendation for next step"
+        },
+        "Human Approved": {
+          "type": "boolean",
+          "required": true,
+          "default": false,
+          "description": "Was analysis approved by human?"
+        },
+        "Notes": {
+          "type": "string",
+          "required": false,
+          "description": "Additional notes"
+        },
+        "Created Date": {
+          "type": "date",
+          "required": true,
+          "auto_generated": true
+        }
+      }
+    },
+
+    "Followup": {
+      "sheet_name": "Follow-ups",
+      "description": "One row per scheduled follow-up task",
+      "id_field": "Follow-up ID",
+      "id_prefix": "FU",
+      "fields": {
+        "Follow-up ID": {
+          "type": "string",
+          "required": true,
+          "auto_generated": true,
+          "format": "FU-{NNN}",
+          "description": "Unique identifier"
+        },
+        "Prospect ID": {
+          "type": "string",
+          "required": true,
+          "foreign_key": "Prospect.Prospect ID",
+          "description": "FK to Prospects sheet"
+        },
+        "Follow-up Type": {
+          "type": "string",
+          "required": true,
+          "enum": ["No Response", "Re-engagement", "Proposal Follow-up", "Post-meeting", "Post-reply"],
+          "description": "Type of follow-up"
+        },
+        "Scheduled Date": {
+          "type": "date",
+          "required": true,
+          "description": "When follow-up is due"
+        },
+        "Follow-up Number": {
+          "type": "integer",
+          "required": true,
+          "description": "Which follow-up (1, 2, 3)"
+        },
+        "Channel": {
+          "type": "string",
+          "required": true,
+          "enum": ["Email", "LinkedIn"],
+          "description": "Communication channel"
+        },
+        "Value Angle": {
+          "type": "string",
+          "required": true,
+          "description": "What value to provide"
+        },
+        "Draft Content": {
+          "type": "string",
+          "required": true,
+          "description": "Draft follow-up message"
+        },
+        "Human Approved": {
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Was this approved?"
+        },
+        "Sent Date": {
+          "type": "date",
+          "required": false,
+          "description": "When follow-up was sent"
+        },
+        "Status": {
+          "type": "string",
+          "required": true,
+          "default": "Scheduled",
+          "enum": ["Scheduled", "Approved", "Sent", "Skipped", "Blocked"],
+          "description": "Follow-up status"
+        },
+        "Blocked Reason": {
+          "type": "string",
+          "required": false,
+          "description": "Why follow-up was blocked (e.g. DO_NOT_CONTACT)"
+        },
+        "Notes": {
+          "type": "string",
+          "required": false,
+          "description": "Additional notes"
+        },
+        "Created Date": {
+          "type": "date",
+          "required": true,
+          "auto_generated": true
+        }
+      }
+    },
+
+    "Meeting": {
+      "sheet_name": "Meetings",
+      "description": "One row per scheduled meeting",
+      "id_field": "Meeting ID",
+      "id_prefix": "MEET",
+      "fields": {
+        "Meeting ID": {
+          "type": "string",
+          "required": true,
+          "auto_generated": true,
+          "format": "MEET-{NNN}",
+          "description": "Unique identifier"
+        },
+        "Prospect ID": {
+          "type": "string",
+          "required": true,
+          "foreign_key": "Prospect.Prospect ID",
+          "description": "FK to Prospects sheet"
+        },
+        "Meeting Date": {
+          "type": "date",
+          "required": true,
+          "description": "When meeting is scheduled"
+        },
+        "Meeting Time": {
+          "type": "string",
+          "required": true,
+          "description": "What time (HH:MM)"
+        },
+        "Duration": {
+          "type": "integer",
+          "required": true,
+          "default": 30,
+          "description": "Duration in minutes"
+        },
+        "Timezone": {
+          "type": "string",
+          "required": true,
+          "description": "Meeting timezone"
+        },
+        "Meeting Type": {
+          "type": "string",
+          "required": true,
+          "enum": ["Call", "Video", "In-person"],
+          "description": "Meeting format"
+        },
+        "Meeting Link": {
+          "type": "url",
+          "required": false,
+          "description": "Zoom/Meet/etc. link"
+        },
+        "Meeting Notes": {
+          "type": "string",
+          "required": false,
+          "description": "Notes from meeting"
+        },
+        "Outcome": {
+          "type": "string",
+          "required": false,
+          "enum": ["Positive", "Neutral", "Negative", "Pending"],
+          "description": "Meeting outcome"
+        },
+        "Next Action": {
+          "type": "string",
+          "required": false,
+          "description": "What to do next"
+        },
+        "Status": {
+          "type": "string",
+          "required": true,
+          "default": "Scheduled",
+          "enum": ["Scheduled", "Completed", "Cancelled", "No-show"],
+          "description": "Meeting status"
+        },
+        "Created Date": {
+          "type": "date",
+          "required": true,
+          "auto_generated": true
+        },
+        "Updated Date": {
+          "type": "date",
+          "required": true,
+          "auto_generated": true,
+          "auto_update": true
+        }
+      }
+    },
+
+    "Proposal": {
+      "sheet_name": "Proposals",
+      "description": "One row per proposal sent",
+      "id_field": "Proposal ID",
+      "id_prefix": "PROP",
+      "fields": {
+        "Proposal ID": {
+          "type": "string",
+          "required": true,
+          "auto_generated": true,
+          "format": "PROP-{NNN}",
+          "description": "Unique identifier"
+        },
+        "Prospect ID": {
+          "type": "string",
+          "required": true,
+          "foreign_key": "Prospect.Prospect ID",
+          "description": "FK to Prospects sheet"
+        },
+        "Proposal Date": {
+          "type": "date",
+          "required": true,
+          "description": "When proposal was sent"
+        },
+        "Proposal Content": {
+          "type": "string",
+          "required": true,
+          "description": "Proposal summary or document link"
+        },
+        "Service": {
+          "type": "string",
+          "required": true,
+          "description": "What service is proposed"
+        },
+        "Price": {
+          "type": "number",
+          "required": false,
+          "description": "Proposed price"
+        },
+        "Price Currency": {
+          "type": "string",
+          "required": false,
+          "default": "USD",
+          "description": "Currency"
+        },
+        "Price Frequency": {
+          "type": "string",
+          "required": false,
+          "default": "Monthly",
+          "enum": ["One-time", "Monthly", "Project", "Quarterly"],
+          "description": "Billing frequency"
+        },
+        "Valid Until": {
+          "type": "date",
+          "required": false,
+          "description": "Proposal expiration date"
+        },
+        "Status": {
+          "type": "string",
+          "required": true,
+          "default": "Draft",
+          "enum": ["Draft", "Sent", "Accepted", "Rejected", "Expired", "Withdrawn"],
+          "description": "Proposal status"
+        },
+        "Notes": {
+          "type": "string",
+          "required": false,
+          "description": "Additional notes"
+        },
+        "Created Date": {
+          "type": "date",
+          "required": true,
+          "auto_generated": true
+        },
+        "Updated Date": {
+          "type": "date",
+          "required": true,
+          "auto_generated": true,
+          "auto_update": true
+        }
+      }
+    },
+
+    "Metric": {
+      "sheet_name": "Metrics",
+      "description": "One row per day — operational metrics",
+      "id_field": "Metric Date",
+      "id_prefix": null,
+      "unique_constraints": ["Metric Date"],
+      "fields": {
+        "Metric Date": {
+          "type": "date",
+          "required": true,
+          "unique": true,
+          "description": "Date for metrics (one row per day)"
+        },
+        "Prospects Researched": { "type": "integer", "default": 0 },
+        "Prospects Qualified": { "type": "integer", "default": 0 },
+        "Outreach Drafted": { "type": "integer", "default": 0 },
+        "Outreach Approved": { "type": "integer", "default": 0 },
+        "Outreach Sent": { "type": "integer", "default": 0 },
+        "Replies Received": { "type": "integer", "default": 0 },
+        "Positive Replies": { "type": "integer", "default": 0 },
+        "Meetings Scheduled": { "type": "integer", "default": 0 },
+        "Proposals Sent": { "type": "integer", "default": 0 },
+        "Won": { "type": "integer", "default": 0 },
+        "Lost": { "type": "integer", "default": 0 },
+        "Nurture": { "type": "integer", "default": 0 },
+        "Follow-ups Due": { "type": "integer", "default": 0 },
+        "Follow-ups Completed": { "type": "integer", "default": 0 },
+        "Response Rate": { "type": "number", "description": "Percentage" },
+        "Positive Response Rate": { "type": "number", "description": "Percentage" },
+        "Meeting Conversion": { "type": "number", "description": "Percentage" },
+        "Notes": { "type": "string" }
+      }
+    },
+
+    "AuditLog": {
+      "sheet_name": "Audit Log",
+      "description": "One row per CRM change — immutable, append-only",
+      "id_field": "Log ID",
+      "id_prefix": "LOG",
+      "append_only": true,
+      "fields": {
+        "Log ID": {
+          "type": "string",
+          "required": true,
+          "auto_generated": true,
+          "format": "LOG-{NNN}",
+          "description": "Unique identifier"
+        },
+        "Timestamp": {
+          "type": "datetime",
+          "required": true,
+          "auto_generated": true,
+          "description": "When change occurred (ISO 8601)"
+        },
+        "Actor": {
+          "type": "string",
+          "required": true,
+          "enum": ["Agent", "Riajul", "System"],
+          "description": "Who made the change"
+        },
+        "Action": {
+          "type": "string",
+          "required": true,
+          "enum": [
+            "CREATE", "READ", "UPDATE", "ARCHIVE", "MERGE",
+            "STAGE_CHANGE", "STATUS_CHANGE", "BLOCK", "UNBLOCK",
+            "APPROVE", "REJECT", "SEND", "RECEIVE", "SCHEDULE",
+            "COMPLETE", "SKIP", "CANCEL"
+          ],
+          "description": "What action was taken"
+        },
+        "Entity Type": {
+          "type": "string",
+          "required": true,
+          "enum": ["Company", "Contact", "Prospect", "Conversation", "ReplyAnalysis", "Followup", "Meeting", "Proposal"],
+          "description": "Which entity was changed"
+        },
+        "Entity ID": {
+          "type": "string",
+          "required": true,
+          "description": "ID of the changed record"
+        },
+        "Field": {
+          "type": "string",
+          "required": false,
+          "description": "Which field was changed"
+        },
+        "Previous Value": {
+          "type": "string",
+          "required": false,
+          "description": "Value before change"
+        },
+        "New Value": {
+          "type": "string",
+          "required": false,
+          "description": "Value after change"
+        },
+        "Reason": {
+          "type": "string",
+          "required": false,
+          "description": "Why change was made"
+        },
+        "Context": {
+          "type": "string",
+          "required": false,
+          "description": "Additional context (JSON)"
+        }
+      }
+    }
+  },
+
+  "global_rules": {
+    "id_generation": {
+      "format": "{PREFIX}-{NNN}",
+      "padding": 3,
+      "auto_increment": true
+    },
+    "timestamp_format": "ISO 8601 (YYYY-MM-DD or YYYY-MM-DDTHH:MM:SS)",
+    "deletion_policy": "No destructive deletion. Use Archive status or status change.",
+    "duplicate_handling": "Detect and flag, never silently create duplicates",
+    "do_not_contact_enforcement": "Absolute block on all outbound communication",
+    "audit_requirement": "Every mutation must generate an audit log entry"
+  }
+}
