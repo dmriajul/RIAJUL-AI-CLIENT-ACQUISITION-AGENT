@@ -125,18 +125,52 @@ You have access to the following knowledge modules:
 - **Architecture Validation:** 12 prospect state tests defined
 - **Status:** Architecture complete — implementation pending
 
-### Module 13 — Persistent CRM Layer (Phase 6A)
+### Module 13 — Persistent CRM Layer (Phase 6A.1 — EXECUTABLE)
 - **Location:** `crm/`
-- **Schema:** `schema.json` — JSON schema for all 10 entities (Companies, Contacts, Prospects, Conversations, Reply Analysis, Follow-ups, Meetings, Proposals, Metrics, Audit Log)
-- **Operations:** `operations.md` — 14 CRUD operations with validation, audit logging, relationship checks
-- **Validation:** `validation-rules.md` — Required fields, enums, duplicate detection, DO_NOT_CONTACT enforcement, touchpoint limits
-- **Stages:** `stage-transitions.md` — Deterministic rules for 16 pipeline stages + 5 stage modifiers
-- **Audit:** `audit-logging.md` — Immutable append-only audit trail for every mutation
-- **Migration:** `migration-plan.md` — Load 4 verified test prospects (Aesthetica, Beefcake, City Aesthetic, Clothing Connection)
-- **Tests:** `test-suite.md` — 12 validation scenarios covering all critical behaviors
-- **Setup:** `google-sheets-setup.md` — Step-by-step guide to connect Google Sheets API
-- **Usage:** `implementation-guide.md` — How Agent will use CRM in daily workflow
-- **Status:** ✅ Code/config complete — 🔴 BLOCKED (Google Sheets API not connected)
+- **Runtime:** Node.js 22+ (ES modules)
+- **Test command:** `cd crm && npm test` — 35/35 tests pass
+- **Migrate command:** `cd crm && node src/service/migration.js`
+
+**Executable entry points:**
+```javascript
+import { CRMService, MemoryAdapter } from './crm/src/index.js';
+const crm = new CRMService(new MemoryAdapter());
+```
+
+**Callable CRM methods (all executable):**
+- `crm.createCompany(data, actor?)` — Create company (with duplicate detection)
+- `crm.createContact(data, actor?)` — Create contact (with company validation)
+- `crm.createProspect(data, actor?)` — Create prospect (with full validation)
+- `crm.getProspect(id)` / `crm.searchProspects(field, value)` — Read operations
+- `crm.updateProspect(id, updates, actor?, reason?)` — Update with audit per field
+- `crm.updateStage(id, newStage, actor?, reason?)` — Stage transition (validates rules)
+- `crm.addInteraction(data, actor?)` — Log outreach/reply (enforces DO_NOT_CONTACT + touchpoint limits)
+- `crm.logReplyAnalysis(data, actor?)` — Log reply classification
+- `crm.addFollowUp(data, actor?)` — Schedule follow-up (enforces DO_NOT_CONTACT)
+- `crm.completeFollowUp(id, actor?)` — Mark follow-up sent
+- `crm.markDoNotContact(contactId, reason, actor?)` — Permanent block + cascades
+- `crm.checkDoNotContact(contactId)` — Check block status
+- `crm.addReferral(data, actor?)` — Process referral (creates chain)
+- `crm.mergeCompanies(primaryId, duplicateId, actor?)` — Merge duplicates
+- `crm.migrateProspects(array, actor?)` — Bulk migration
+- `crm.getProspectHistory(id)` — Full history with audit trail
+
+**Workflow trace (each step calls executable function):**
+```
+1. Lead discovery         → [manual web research, no CRM call]
+2. Qualification          → crm.createCompany() + crm.createContact() + crm.createProspect()
+3. Outreach drafting      → crm.addInteraction({ Message Type: 'Outbound', Human Approved: true })
+4. Response received      → crm.addInteraction({ Message Type: 'Inbound' }) + crm.logReplyAnalysis()
+5. Stage update           → crm.updateStage()
+6. Follow-up              → crm.addFollowUp() → crm.completeFollowUp()
+7. Audit trail            → automatic on every mutation
+```
+
+**Storage adapter (swappable):**
+- `MemoryAdapter` — In-memory (testing, no credentials needed) ✅ WORKING
+- `GoogleSheetsAdapter` — Google Sheets (production) ⚠️ Code complete, not live-tested
+
+**Status:** ✅ Code complete — ✅ 35/35 unit tests pass — 🔴 Google Sheets integration blocked (credentials required for live testing)
 
 ---
 

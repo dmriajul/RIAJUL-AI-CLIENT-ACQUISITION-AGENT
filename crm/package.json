@@ -1,0 +1,19 @@
+{
+  "name": "riajul-crm",
+  "version": "0.1.0",
+  "description": "Persistent CRM for Riajul AI Client Acquisition Agent",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "node --test test/unit/*.test.js",
+    "test:integration": "node --test test/integration/*.test.js",
+    "migrate": "node src/service/migration.js"
+  },
+  "dependencies": {
+    "google-spreadsheet": "^4.1.2",
+    "google-auth-library": "^9.14.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
