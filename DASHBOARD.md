@@ -1,9 +1,9 @@
 # RIAJUL AI CLIENT ACQUISITION AGENT — Dashboard
 
-## Status: ✅ PHASE 4 COMPLETE — Follow-Up + Reply Intelligence Module Active
+## Status: 🏗️ PHASE 6 IN PROGRESS — Integration & Operational Architecture
 
-**System Status:** Knowledge Base ✅ | Pricing ✅ | Playbook ✅ | Outreach Validated ✅ | Follow-Up + Reply Intelligence ✅
-**Next Step:** Scale to 10 prospects → 25 → 50+
+**System Status:** Knowledge Base ✅ | Pricing ✅ | Playbook ✅ | Outreach Validated ✅ | Follow-Up + Reply Intelligence ✅ | Integration Architecture ✅
+**Next Step:** Implement persistent CRM (Phase 6C) → Connect email → Go live
 
 ---
 
@@ -31,6 +31,55 @@
 | `NURTURE re-engagement` | Check for prospects ready to re-engage |
 | `Handle referral from [prospect]` | Process referral, create linked prospect record |
 | `Check duplicates for [company]` | Verify no duplicate records exist |
+
+---
+
+## 🔌 Integration & Operations (Phase 6)
+
+### Integration Status
+
+| Integration | Priority | Status | Operational Problem Solved |
+|-------------|----------|--------|----------------------------|
+| Persistent CRM Storage | P0 | 🔴 NOT CONNECTED | Data persists across sessions; pipeline tracking |
+| Email Integration | P0 | 🔴 NOT CONNECTED | Send/receive without manual copy-paste |
+| Automated Reminders | P1 | 🔴 NOT CONNECTED | Never miss follow-ups or approvals |
+| Email Verification | P1 | 🔴 NOT CONNECTED | Reduce bounce rate from ~30% to <5% |
+| Calendar Integration | P1 | 🔴 NOT CONNECTED | Auto-schedule meetings, no back-and-forth |
+| Analytics Dashboard | P1 | 🔴 NOT CONNECTED | Data-driven optimization, know what works |
+| Meeting Preparation | P1 | 🔴 NOT CONNECTED | Walk into meetings fully prepared |
+| Proposal Generation | P1 | 🔴 NOT CONNECTED | Create polished proposals in minutes |
+| Meta Ad Library | P2 | 🔴 NOT CONNECTED | See what ads competitors run |
+| LinkedIn/Sales Navigator | P2 | 🔴 NOT CONNECTED | Find decision-makers, warm intros |
+| Social Media Monitoring | P2 | 🔴 NOT CONNECTED | Real-time buying signal detection |
+
+### Automation Boundaries
+
+| Level | Examples |
+|-------|----------|
+| 🟢 AUTOMATIC | Research, qualification, classification, internal analysis, CRM recommendations, draft generation |
+| 🟡 APPROVAL REQUIRED | All external communication, commitments, high-impact CRM changes |
+| 🔴 NEVER AUTOMATIC | Fabrication, unauthorized contact, DO_NOT_CONTACT violations, unauthorized commitments |
+
+### Source of Truth
+
+| Data Type | Authoritative Source |
+|-----------|---------------------|
+| Riajul's services, pricing, experience | Knowledge Base (01_PROFILE through 04_EXPERIENCE) |
+| Case studies, testimonials | 05_PROOF/ |
+| Prospect data, pipeline | CRM (persistent storage — PENDING) |
+| Pricing | 07_OUTREACH/Pricing-Guidance.md |
+| Behavioral rules | Agent System Prompt |
+| Workflow logic | workflows/ |
+| Outreach templates | 07_OUTREACH/ |
+
+### Implementation Plan
+
+| Phase | What | Dependencies | Status |
+|-------|------|-------------|--------|
+| 6A | Persistent CRM (Google Sheets) | None | 📋 Schema defined |
+| 6B | Email Integration (Gmail) | 6A | 🔴 Not started |
+| 6C | Operational Dashboard | 6A, 6B | 🔴 Not started |
+| 6D | Advanced Integrations | 6A-6C | 🔴 Not started |
 
 ---
 
@@ -171,7 +220,7 @@ MEETING → PROPOSAL → WON / LOST / NURTURE
 | `07_OUTREACH/` | Email, LinkedIn, follow-up frameworks, pricing, objection handling |
 | `08_RULES/` | Brand voice, accuracy, outreach rules |
 | `09_CRM/` | Pipeline schema |
-| `workflows/` | 7 workflow files (daily, research, reply intelligence, CRM, playbook, follow-up intelligence, validation tests) |
+| `workflows/` | 11 workflow files (daily, research, reply intelligence, CRM, playbook, follow-up intelligence, validation tests, integration architecture, CRM persistence, operational metrics, architecture validation) |
 | `audits/` | Knowledge base audit, portfolio intelligence, 5-prospect test, outreach validation |
 
 ---

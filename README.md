@@ -71,14 +71,18 @@ RIAJUL-AI-CLIENT-ACQUISITION-AGENT/
 ├── 09_CRM/                           ← Pipeline management
 │   └── Pipeline-Schema.md
 │
-├── workflows/                        ← 7 automated workflows
+├── workflows/                        ← 11 automated workflows
 │   ├── 01-daily-workflow.md          ← Full daily workflow (10 steps)
 │   ├── 02-research-workflow.md       ← Prospect research process
 │   ├── 03-reply-intelligence.md      ← Reply analysis (13 categories)
 │   ├── 04-crm-management.md          ← CRM operations (expanded fields)
 │   ├── 05-client-hunting-playbook.md ← Client acquisition strategy
 │   ├── 06-follow-up-intelligence.md  ← Follow-up decision engine (20 scenarios)
-│   └── 07-internal-validation-tests.md ← 10 validated test scenarios
+│   ├── 07-internal-validation-tests.md ← 10 validated test scenarios
+│   ├── 08-integration-architecture.md ← Integration audit + priority matrix (Phase 6)
+│   ├── 09-crm-persistence-schema.md  ← Canonical CRM schema for persistent storage (Phase 6)
+│   ├── 10-operational-metrics.md     ← Metrics tracking definitions (Phase 6)
+│   └── 11-architecture-validation.md ← 12-state architecture validation tests (Phase 6)
 │
 ├── audits/                           ← Validation & audit reports
 │   ├── knowledge-base-audit.md       ← KB health: 85%+ complete
@@ -243,13 +247,18 @@ MEETING → PROPOSAL → WON / LOST / NURTURE
 - [x] All corrections applied
 - [x] Hallucination check passed
 
-### Phase 6 — Integration (Future)
-- [ ] Connect CRM (Google Sheets / Airtable)
-- [ ] Email integration (Gmail)
-- [ ] Calendar integration
-- [ ] Automated follow-up reminders
-- [ ] Reply analysis automation
-- [ ] Daily report automation
+### Phase 6 — Integration & Operational Architecture 🏗️ IN PROGRESS
+- [x] Integration Readiness Audit (11 integrations assessed)
+- [x] CRM Persistence Schema (10-sheet canonical structure defined)
+- [x] Source of Truth Map (9 data types → canonical sources)
+- [x] Automation Boundaries (Automatic / Approval Required / Never Automatic)
+- [x] Integration Priority Matrix (P0/P1/P2 with operational problem for each)
+- [x] Operational Metrics Definitions (activity, conversion, pipeline, quality, efficiency, revenue)
+- [x] Architecture Validation Tests (12 prospect states defined)
+- [ ] Implement persistent CRM (Google Sheets) — Phase 6A
+- [ ] Connect email integration (Gmail) — Phase 6B
+- [ ] Build operational dashboard — Phase 6C
+- [ ] Execute architecture validation tests — Phase 6D
 
 ### Phase 7 — Advanced (Future)
 - [ ] Multi-source prospect discovery
