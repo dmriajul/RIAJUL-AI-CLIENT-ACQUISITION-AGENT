@@ -1056,6 +1056,140 @@ describe('Test 16: Merge Duplicate Records', () => {
 });
 
 // ============================================
+// TEST 17: Reply Analysis (Missing Test)
+// ============================================
+describe('Test 17: Reply Analysis', () => {
+  it('should log reply analysis and update prospect', async () => {
+    await crm.createCompany({ 'Company Name': 'Test Corp' });
+    await crm.createContact({ 'Company ID': 'COMP-001' });
+    await crm.createProspect({
+      'Contact ID': 'CONT-001',
+      'Company ID': 'COMP-001',
+      'Priority': 'A',
+      'Priority Reason': 'Test',
+      'ICP Segment': 'Primary',
+      'Service': 'SEO',
+      'Opportunity': 'Test',
+      'Research Evidence': 'Test',
+      'Portfolio Proof': 'Test'
+    });
+
+    // First, add an inbound interaction
+    const convResult = await crm.addInteraction({
+      'Prospect ID': 'PRO-001',
+      'Message Type': 'Inbound',
+      'Message Channel': 'Email',
+      'Message Content': 'Yes, I am interested in learning more.'
+    });
+
+    // Now log reply analysis
+    const analysisResult = await crm.logReplyAnalysis({
+      'Conversation ID': convResult.conversationId,
+      'Prospect ID': 'PRO-001',
+      'Reply Content': 'Yes, I am interested in learning more.',
+      'Classification': 'INTERESTED',
+      'Sentiment': 'Positive',
+      'Interest Level': 'High',
+      'Urgency': 'Medium',
+      'Recommended Action': 'Schedule discovery call',
+      'Human Approved': true
+    });
+
+    assert.equal(analysisResult.success, true);
+    assert.ok(analysisResult.analysisId);
+    assert.equal(analysisResult.analysis.Classification, 'INTERESTED');
+    assert.equal(analysisResult.analysis.Sentiment, 'Positive');
+
+    // Verify prospect was updated
+    const prospect = await crm.getProspect('PRO-001');
+    assert.equal(prospect['Interest Level'], 'High');
+    assert.equal(prospect['Sentiment'], 'Positive');
+  });
+});
+
+// ============================================
+// TEST 18: Complete Follow-Up (Missing Test)
+// ============================================
+describe('Test 18: Complete Follow-Up', () => {
+  it('should mark follow-up as sent', async () => {
+    await crm.createCompany({ 'Company Name': 'Test Corp' });
+    await crm.createContact({ 'Company ID': 'COMP-001' });
+    await crm.createProspect({
+      'Contact ID': 'CONT-001',
+      'Company ID': 'COMP-001',
+      'Priority': 'A',
+      'Priority Reason': 'Test',
+      'ICP Segment': 'Primary',
+      'Service': 'SEO',
+      'Opportunity': 'Test',
+      'Research Evidence': 'Test',
+      'Portfolio Proof': 'Test'
+    });
+
+    // Create a follow-up
+    const fuResult = await crm.addFollowUp({
+      'Prospect ID': 'PRO-001',
+      'Follow-up Type': 'No Response',
+      'Scheduled Date': '2026-09-25',
+      'Follow-up Number': 1,
+      'Channel': 'Email',
+      'Value Angle': 'New case study',
+      'Draft Content': 'Hi, wanted to follow up...'
+    });
+
+    assert.equal(fuResult.success, true);
+
+    // Complete the follow-up
+    const completeResult = await crm.completeFollowUp(fuResult.followupId, 'Agent');
+    assert.equal(completeResult.success, true);
+
+    // Verify follow-up status
+    const followups = await storage.readAll('Follow-ups');
+    const updatedFu = followups.find(f => f['Follow-up ID'] === fuResult.followupId);
+    assert.equal(updatedFu.Status, 'Sent');
+    assert.ok(updatedFu['Sent Date']);
+  });
+
+  it('should reject completing blocked follow-up', async () => {
+    await crm.createCompany({ 'Company Name': 'Test Corp' });
+    await crm.createContact({ 'Company ID': 'COMP-001' });
+    await crm.createProspect({
+      'Contact ID': 'CONT-001',
+      'Company ID': 'COMP-001',
+      'Priority': 'A',
+      'Priority Reason': 'Test',
+      'ICP Segment': 'Primary',
+      'Service': 'SEO',
+      'Opportunity': 'Test',
+      'Research Evidence': 'Test',
+      'Portfolio Proof': 'Test'
+    });
+
+    // Mark DO_NOT_CONTACT
+    await crm.markDoNotContact('CONT-001', 'Stop', 'Riajul');
+
+    // Try to create follow-up (will be blocked)
+    const fuResult = await crm.addFollowUp({
+      'Prospect ID': 'PRO-001',
+      'Follow-up Type': 'No Response',
+      'Scheduled Date': '2026-09-25',
+      'Follow-up Number': 1,
+      'Channel': 'Email',
+      'Value Angle': 'Test',
+      'Draft Content': 'Test'
+    });
+
+    assert.equal(fuResult.blocked, true);
+    assert.equal(fuResult.status, 'Blocked');
+
+    // Try to complete blocked follow-up
+    const completeResult = await crm.completeFollowUp(fuResult.followupId, 'Agent');
+    assert.equal(completeResult.success, false);
+    assert.ok(completeResult.reason.includes('blocked'));
+  });
+});
+
+// ============================================
 // SUMMARY
 // ============================================
 console.log('');

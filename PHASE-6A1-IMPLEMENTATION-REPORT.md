@@ -9,7 +9,7 @@
 
 ## Executive Summary
 
-Phase 6A.1 delivers **actual executable CRM code** with **35 passing unit tests**. This is the real implementation that was missing from Phase 6A (which only had specifications).
+Phase 6A.1 delivers **actual executable CRM code** with **38 passing unit tests**. This is the real implementation that was missing from Phase 6A (which only had specifications).
 
 **What changed since Phase 6A:**
 - Phase 6A: "We have specifications" (0% executable)
@@ -57,7 +57,7 @@ Phase 6A.1 delivers **actual executable CRM code** with **35 passing unit tests*
 ### Tests (2 files)
 | File | Purpose | Lines |
 |------|---------|-------|
-| `crm/test/unit/crm.test.js` | 35 unit tests | 1,247 |
+| `crm/test/unit/crm.test.js` | 38 unit tests | 1,350 |
 | `crm/test/integration/google-sheets.test.js` | Integration tests (require credentials) | 234 |
 
 ### Configuration (2 files)
@@ -122,7 +122,7 @@ crm.migrateProspects(array, actor?)
 ```
 
 ### Validation ✅
-- All 15 entity validation rules implemented
+- All 6 entity validation rules implemented (Company, Contact, Prospect, Conversation, ReplyAnalysis, Follow-up)
 - All stage transitions enforced
 - Duplicate detection (company name, contact email, prospect contact+service)
 - DO_NOT_CONTACT enforcement
@@ -149,13 +149,13 @@ crm.migrateProspects(array, actor?)
 
 ### Test Results
 ```
-# tests: 35
-# suites: 16
-# pass: 35
+# tests: 38
+# suites: 18
+# pass: 38
 # fail: 0
 # cancelled: 0
 # skipped: 0
-# duration_ms: ~130ms
+# duration_ms: ~173ms
 ```
 
 ### Test Coverage
@@ -178,6 +178,8 @@ crm.migrateProspects(array, actor?)
 | Test 14: Referral | 1 | ✅ Pass |
 | Test 15: Complete Prospect History | 1 | ✅ Pass |
 | Test 16: Merge Duplicate Records | 1 | ✅ Pass |
+| Test 17: Reply Analysis | 1 | ✅ Pass |
+| Test 18: Complete Follow-Up | 2 | ✅ Pass |
 
 ### Critical Tests Verified
 - ✅ DO_NOT_CONTACT blocks all outbound operations (4 tests)
@@ -403,8 +405,8 @@ cd crm && npm run test:integration
 | Aspect | Phase 6A | Phase 6A.1 |
 |--------|----------|------------|
 | **Executable code** | 0 lines | 3,838 lines |
-| **Tests** | 0 tests | 35 tests |
-| **Test status** | N/A | 35/35 passing |
+| **Tests** | 0 tests | 38 tests |
+| **Test status** | N/A | 38/38 passing |
 | **Business logic** | Specified | Implemented |
 | **Validation** | Documented | Enforced |
 | **Audit logging** | Described | Working |
@@ -442,7 +444,7 @@ cd crm && npm run test:integration
 ## 13. Git Commit
 
 **Commit:** `2f2f39d`  
-**Message:** "Phase 6A.1: CRM implementation - executable code, 35/35 unit tests passing"  
+**Message:** "Phase 6A.1: CRM implementation - executable code, 38/38 unit tests passing"  
 **Files changed:** 15  
 **Insertions:** 4,824 lines  
 **Deletions:** 11 lines
@@ -453,7 +455,7 @@ cd crm && npm run test:integration
 
 **Phase 6A.1 delivers:**
 - ✅ Actual executable CRM code
-- ✅ 35 passing unit tests
+- ✅ 38 passing unit tests
 - ✅ All business logic implemented
 - ✅ Complete audit trail
 - ✅ Migration tested
