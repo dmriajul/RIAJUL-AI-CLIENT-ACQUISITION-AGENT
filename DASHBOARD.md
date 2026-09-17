@@ -1,9 +1,9 @@
 # RIAJUL AI CLIENT ACQUISITION AGENT — Dashboard
 
-## Status: ✅ PHASE 3 READY — Client Hunting System Active
+## Status: ✅ PHASE 4 COMPLETE — Follow-Up + Reply Intelligence Module Active
 
-**System Status:** Knowledge Base complete. Pricing configured. Playbook ready.
-**Next Step:** Run 5-prospect validation test.
+**System Status:** Knowledge Base ✅ | Pricing ✅ | Playbook ✅ | Outreach Validated ✅ | Follow-Up + Reply Intelligence ✅
+**Next Step:** Scale to 10 prospects → 25 → 50+
 
 ---
 
@@ -15,11 +15,42 @@
 | `Find clients` | Research new prospects in target industries |
 | `Research [company]` | Deep research on a specific prospect |
 | `Create outreach for [prospect]` | Draft personalized outreach message |
-| `Today's follow-ups` | Show all follow-ups due today |
-| `Analyze reply from [prospect]` | Classify reply and recommend next action |
 | `Pipeline report` | Show full pipeline status |
 | `Daily report` | Generate end-of-day activity summary |
 | `Daily client acquisition plan` | Plan tomorrow's priorities |
+
+---
+
+## 🔁 Follow-Up & Reply Intelligence (Phase 4)
+
+| Command | What It Does |
+|---------|-------------|
+| `Today's follow-ups` | Show ALL follow-ups due (no-response + re-engagement + proposal + post-meeting) |
+| `Analyze reply from [prospect]` | Full reply analysis: intent, sentiment, interest, buying signals, objections → next action |
+| `Process follow-up for [prospect]` | Generate next follow-up based on timing config and conversation history |
+| `NURTURE re-engagement` | Check for prospects ready to re-engage |
+| `Handle referral from [prospect]` | Process referral, create linked prospect record |
+| `Check duplicates for [company]` | Verify no duplicate records exist |
+
+---
+
+## 📊 Reply Classification (13 Categories)
+
+| Category | Action |
+|----------|--------|
+| INTERESTED | Acknowledge → suggest call |
+| QUALIFIED | Confirm fit → discuss scope |
+| MEETING_REQUEST | Offer time slots → share Calendly |
+| PRICING | Provide range → suggest call |
+| QUESTION | Answer clearly → offer call |
+| OBJECTION | Address with evidence → offer call |
+| NOT_NOW | Acknowledge → NURTURE |
+| NOT_INTERESTED | Thank → LOST → STOP |
+| WRONG_PERSON | Ask for referral |
+| REFERRAL | Thank → add new prospect |
+| ALREADY_HAVE_PROVIDER | Respect → offer audit → NURTURE |
+| NEEDS_MORE_INFORMATION | Share relevant proof |
+| UNCLEAR | Ask clarifying question (do NOT force) |
 
 ---
 
@@ -137,11 +168,11 @@ MEETING → PROPOSAL → WON / LOST / NURTURE
 | `04_EXPERIENCE/` | Work experience, campaign experience |
 | `05_PROOF/` | 9 case studies, results log, 7 testimonials |
 | `06_TARGET_CLIENTS/` | ICP, industries, geography |
-| `07_OUTREACH/` | Email, LinkedIn, follow-up frameworks |
-| `08_RULES/` | Brand voice, accuracy, outreach, pricing, objections |
+| `07_OUTREACH/` | Email, LinkedIn, follow-up frameworks, pricing, objection handling |
+| `08_RULES/` | Brand voice, accuracy, outreach rules |
 | `09_CRM/` | Pipeline schema |
-| `workflows/` | 5 workflow files + Client Hunting Playbook |
-| `audits/` | Knowledge base audit + Portfolio intelligence map |
+| `workflows/` | 7 workflow files (daily, research, reply intelligence, CRM, playbook, follow-up intelligence, validation tests) |
+| `audits/` | Knowledge base audit, portfolio intelligence, 5-prospect test, outreach validation |
 
 ---
 

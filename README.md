@@ -28,25 +28,28 @@ RIAJUL-AI-CLIENT-ACQUISITION-AGENT/
 │   ├── Professional-Positioning.md
 │   └── Career-Goals.md
 │
-├── 02_SERVICES/                      ← What you offer
+├── 02_SERVICES/                      ← What you offer (7 services)
 │   ├── Social-Media-Marketing.md
 │   ├── Meta-Ads.md
 │   ├── Google-Ads.md
-│   └── SEO.md
+│   ├── SEO.md
+│   ├── Local-SEO-ORM.md
+│   ├── Analytics-Tracking.md
+│   └── CRO.md
 │
-├── 03_PORTFOLIO/                     ← Your proof (ADD YOUR REAL PORTFOLIO)
+├── 03_PORTFOLIO/                     ← Your verified proof
 │   ├── Portfolio-Overview.md
 │   ├── SMM-Portfolio.md
 │   └── Portfolio-URLs.md
 │
-├── 04_EXPERIENCE/                    ← Your experience (ADD YOUR REAL EXPERIENCE)
+├── 04_EXPERIENCE/                    ← Your verified experience
 │   ├── Work-Experience.md
 │   └── Campaign-Experience.md
 │
-├── 05_PROOF/                         ← Your results (ADD YOUR REAL RESULTS)
-│   ├── Case-Studies.md
-│   ├── Results.md
-│   └── Testimonials.md
+├── 05_PROOF/                         ← Your verified results
+│   ├── Case-Studies.md               ← 9 verified case studies
+│   ├── Results.md                    ← All verified metrics
+│   └── Testimonials.md              ← 7 verified testimonials
 │
 ├── 06_TARGET_CLIENTS/                ← Who you're looking for
 │   ├── ICP.md
@@ -56,7 +59,9 @@ RIAJUL-AI-CLIENT-ACQUISITION-AGENT/
 ├── 07_OUTREACH/                      ← How you communicate
 │   ├── Email-Frameworks.md
 │   ├── LinkedIn-Frameworks.md
-│   └── Follow-Up-Frameworks.md
+│   ├── Follow-Up-Frameworks.md
+│   ├── Pricing-Guidance.md          ← Approved pricing ranges
+│   └── Objection-Handling.md        ← 8 common objections
 │
 ├── 08_RULES/                         ← Strict rules the agent follows
 │   ├── Brand-Voice.md
@@ -66,11 +71,23 @@ RIAJUL-AI-CLIENT-ACQUISITION-AGENT/
 ├── 09_CRM/                           ← Pipeline management
 │   └── Pipeline-Schema.md
 │
-└── workflows/                        ← Automated workflows
-    ├── 01-daily-workflow.md
-    ├── 02-research-workflow.md
-    ├── 03-reply-intelligence.md
-    └── 04-crm-management.md
+├── workflows/                        ← 7 automated workflows
+│   ├── 01-daily-workflow.md          ← Full daily workflow (10 steps)
+│   ├── 02-research-workflow.md       ← Prospect research process
+│   ├── 03-reply-intelligence.md      ← Reply analysis (13 categories)
+│   ├── 04-crm-management.md          ← CRM operations (expanded fields)
+│   ├── 05-client-hunting-playbook.md ← Client acquisition strategy
+│   ├── 06-follow-up-intelligence.md  ← Follow-up decision engine (20 scenarios)
+│   └── 07-internal-validation-tests.md ← 10 validated test scenarios
+│
+├── audits/                           ← Validation & audit reports
+│   ├── knowledge-base-audit.md       ← KB health: 85%+ complete
+│   ├── portfolio-intelligence-map.md ← Portfolio verification
+│   ├── 5-prospect-validation-test.md ← First 5-prospect research test
+│   └── outreach-validation-revised.md ← Outreach validation (post-correction)
+│
+└── templates/
+    └── README.md
 ```
 
 ---
@@ -94,32 +111,47 @@ RIAJUL-AI-CLIENT-ACQUISITION-AGENT/
 
 ## ⚡ Quick Start
 
-### 1. Setup (One-time)
-Fill in your personal information in these files:
-- `01_PROFILE/About-Me.md` — Your details
-- `02_SERVICES/` — Review and customize service descriptions
-- `03_PORTFOLIO/Portfolio-URLs.md` — Add your real portfolio links
-- `04_EXPERIENCE/Work-Experience.md` — Add your real experience
-- `05_PROOF/Case-Studies.md` — Add your real case studies
-- `06_TARGET_CLIENTS/ICP.md` — Review and customize your ICP
+### 1. Setup (One-time) ✅ COMPLETED
+All knowledge base files populated with verified data from portfolio.riajultech.com:
+- [x] Profile, positioning, goals
+- [x] 7 service descriptions
+- [x] 9 case studies with verified metrics
+- [x] 7 testimonials from portfolio
+- [x] Work experience + certifications
+- [x] ICP based on actual portfolio proof
+- [x] Pricing configured (approved by Riajul)
+- [x] Availability: 3-5 new clients
 
 ### 2. Daily Use
 ```
 Morning:  "Run today's client acquisition workflow"
+          "Today's follow-ups"
 Midday:   Review and approve outreach drafts
+          Process replies: "Analyze reply from [prospect]"
 Evening:  "Daily report" + "Daily client acquisition plan"
 ```
 
 ### 3. Key Commands
 ```
-Run today's client acquisition workflow  → Full daily workflow
-Find clients                              → Research new prospects
-Research [company]                        → Deep research
-Create outreach for [prospect]            → Draft outreach
-Today's follow-ups                        → Check follow-ups due
-Analyze reply from [prospect]             → Process replies
-Pipeline report                           → Pipeline overview
-Daily report                              → End-of-day summary
+Core:
+  Run today's client acquisition workflow  → Full daily workflow
+  Find clients                              → Research new prospects
+  Research [company]                        → Deep research
+  Create outreach for [prospect]            → Draft outreach
+  Pipeline report                           → Pipeline overview
+  Daily report                              → End-of-day summary
+
+Follow-Up & Reply Intelligence:
+  Today's follow-ups                        → All follow-ups due (all types)
+  Analyze reply from [prospect]             → Classify + action + draft response
+  Process follow-up for [prospect]          → Generate next follow-up
+  NURTURE re-engagement                     → Check re-engagement dates
+  Handle referral from [prospect]           → Process referral
+
+Edge Cases:
+  Handle wrong person for [prospect]        → Process wrong-person response
+  Handle multi-contact for [company]        → Manage multiple contacts
+  Check duplicates for [company]            → Verify no duplicates
 ```
 
 ---
@@ -148,6 +180,13 @@ NEW → RESEARCHED → QUALIFIED → OUTREACH READY → CONTACTED →
 FOLLOW-UP 1 → FOLLOW-UP 2 → REPLIED → CONVERSATION → 
 MEETING → PROPOSAL → WON / LOST / NURTURE
 ```
+
+### Stage Modifiers (Phase 4):
+- **DO_NOT_CONTACT** — Prospect requested no contact (blocks all outreach)
+- **REFERRED** — Contact referred another person (links to new record)
+- **MULTI_CONTACT** — Multiple people from same company (links records)
+- **RE_ENGAGING** — Returning to NURTURE prospect (resets counters)
+- **AT_RISK** — Conversation stalled after interest (triggers re-engagement)
 
 ---
 
@@ -187,15 +226,24 @@ MEETING → PROPOSAL → WON / LOST / NURTURE
 - [x] Outreach channel strategy defined
 - [x] Scale plan (5 → 10 → 15 → 20+ prospects/day)
 
-### Phase 4 — Validation Test (Current)
-- [ ] 5-prospect validation test
-- [ ] Outreach test
-- [ ] Follow-up test
-- [ ] Reply intelligence test
-- [ ] CRM workflow test
-- [ ] End-to-end system test
+### Phase 4 — Follow-Up & Reply Intelligence ✅
+- [x] Follow-up Intelligence Engine (20 scenarios, configurable timing)
+- [x] Reply Intelligence Module (13 classification categories)
+- [x] CRM expanded fields (interest level, sentiment, objection, buying signals, etc.)
+- [x] Edge case handling (referrals, wrong person, duplicates, multi-contact, late replies)
+- [x] Pricing Guidance integrated
+- [x] Objection Handling guide
+- [x] Agent system prompt updated
+- [x] Dashboard updated with new commands
+- [x] 10 internal validation tests — all passed (10/10)
 
-### Phase 5 — Integration (Future)
+### Phase 5 — Validation & Outreach Testing ✅
+- [x] 5-prospect validation test completed
+- [x] Outreach validation test completed (conditional pass → revised)
+- [x] All corrections applied
+- [x] Hallucination check passed
+
+### Phase 6 — Integration (Future)
 - [ ] Connect CRM (Google Sheets / Airtable)
 - [ ] Email integration (Gmail)
 - [ ] Calendar integration
@@ -203,11 +251,12 @@ MEETING → PROPOSAL → WON / LOST / NURTURE
 - [ ] Reply analysis automation
 - [ ] Daily report automation
 
-### Phase 6 — Advanced (Future)
+### Phase 7 — Advanced (Future)
 - [ ] Multi-source prospect discovery
 - [ ] Automated web research
-- [ ] CRM synchronization
-- [ ] Meeting preparation
+- [ ] Meta Ad Library integration
+- [ ] LinkedIn Sales Navigator integration
+- [ ] Meeting preparation automation
 - [ ] Proposal generation
 - [ ] Performance analytics
 
