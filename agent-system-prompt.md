@@ -125,52 +125,68 @@ You have access to the following knowledge modules:
 - **Architecture Validation:** 12 prospect state tests defined
 - **Status:** Architecture complete — implementation pending
 
-### Module 13 — Persistent CRM Layer (Phase 6A.1 — EXECUTABLE)
+### Module 13 — Persistent CRM Layer (Phase 6A.3 — AGENT INTEGRATION COMPLETE)
 - **Location:** `crm/`
 - **Runtime:** Node.js 22+ (ES modules)
-- **Test command:** `cd crm && npm test` — 35/35 tests pass
+- **Test command:** `cd crm && npm test` — 71/71 tests pass (38 CRM + 33 tool integration)
 - **Migrate command:** `cd crm && node src/service/migration.js`
 
-**Executable entry points:**
-```javascript
-import { CRMService, MemoryAdapter } from './crm/src/index.js';
-const crm = new CRMService(new MemoryAdapter());
+**Architecture:**
+```
+Agent → ToolExecutor (crm/src/tools/executor.js)
+      → CRMService (crm/src/service/crm.js)
+      → StorageAdapter (crm/src/storage/adapter.js)
+      → MemoryAdapter | GoogleSheetsAdapter
 ```
 
-**Callable CRM methods (all executable):**
-- `crm.createCompany(data, actor?)` — Create company (with duplicate detection)
-- `crm.createContact(data, actor?)` — Create contact (with company validation)
-- `crm.createProspect(data, actor?)` — Create prospect (with full validation)
-- `crm.getProspect(id)` / `crm.searchProspects(field, value)` — Read operations
-- `crm.updateProspect(id, updates, actor?, reason?)` — Update with audit per field
-- `crm.updateStage(id, newStage, actor?, reason?)` — Stage transition (validates rules)
-- `crm.addInteraction(data, actor?)` — Log outreach/reply (enforces DO_NOT_CONTACT + touchpoint limits)
-- `crm.logReplyAnalysis(data, actor?)` — Log reply classification
-- `crm.addFollowUp(data, actor?)` — Schedule follow-up (enforces DO_NOT_CONTACT)
-- `crm.completeFollowUp(id, actor?)` — Mark follow-up sent
-- `crm.markDoNotContact(contactId, reason, actor?)` — Permanent block + cascades
-- `crm.checkDoNotContact(contactId)` — Check block status
-- `crm.addReferral(data, actor?)` — Process referral (creates chain)
-- `crm.mergeCompanies(primaryId, duplicateId, actor?)` — Merge duplicates
-- `crm.migrateProspects(array, actor?)` — Bulk migration
-- `crm.getProspectHistory(id)` — Full history with audit trail
+**Agent-callable tools (15 registered, validated, tested):**
 
-**Workflow trace (each step calls executable function):**
+| Tool | Description | Required Args |
+|------|-------------|---------------|
+| `create_company` | Create a new company | Company Name |
+| `create_contact` | Create a new contact (company must exist) | Company ID |
+| `create_prospect` | Create a new prospect opportunity | Company ID, Contact ID, Priority, ICP Segment, Service, Opportunity, Research Evidence, Portfolio Proof, Priority Reason |
+| `get_prospect` | Get prospect by ID | Prospect ID |
+| `search_prospects` | Search prospects by field | Field, Value |
+| `update_prospect` | Update prospect fields | Prospect ID |
+| `update_stage` | Update pipeline stage (validated) | Prospect ID, New Stage, Reason |
+| `add_interaction` | Log outbound/inbound interaction | Prospect ID, Message Type, Message Channel, Message Content |
+| `log_reply_analysis` | Analyze a received reply | Prospect ID, Conversation ID, Reply Content, Classification, Sentiment, Interest Level, Urgency, Recommended Action |
+| `add_follow_up` | Schedule a follow-up | Prospect ID, Follow-up Type, Scheduled Date, Follow-up Number, Channel, Value Angle, Draft Content |
+| `complete_follow_up` | Mark follow-up as sent | Follow-up ID |
+| `mark_do_not_contact` | Block all outbound to contact | Contact ID, Reason |
+| `check_do_not_contact` | Check if contact is blocked | Contact ID |
+| `add_referral` | Create prospect from referral | Source Prospect ID, New Company Name, New Contact Name, New Contact Email, Service, Priority, Priority Reason, ICP Segment, Opportunity, Research Evidence, Portfolio Proof |
+| `get_prospect_history` | Full history + audit trail | Prospect ID |
+
+**Tool execution path:**
 ```
-1. Lead discovery         → [manual web research, no CRM call]
-2. Qualification          → crm.createCompany() + crm.createContact() + crm.createProspect()
-3. Outreach drafting      → crm.addInteraction({ Message Type: 'Outbound', Human Approved: true })
-4. Response received      → crm.addInteraction({ Message Type: 'Inbound' }) + crm.logReplyAnalysis()
-5. Stage update           → crm.updateStage()
-6. Follow-up              → crm.addFollowUp() → crm.completeFollowUp()
-7. Audit trail            → automatic on every mutation
+Agent calls tool → ToolExecutor.execute(toolName, args, actor)
+  → 1. Validate tool is registered
+  → 2. Validate arguments against schema (types, enums, required, no unknown fields)
+  → 3. Call CRMService method
+  → 4. Return structured result { success, tool, ...data } or { success: false, error }
 ```
+
+**Safety enforcement (in CRMService, not bypassable by agent):**
+- DO_NOT_CONTACT blocks all outbound operations
+- Stage transitions validated against transition map
+- Duplicate detection for companies, contacts, prospects
+- Touchpoint limits (4 email, 3 LinkedIn, 7 combined)
+- Outbound messages require `Human Approved: true`
+- Every mutation generates an immutable audit log entry
+
+**Human approval boundary:**
+- The agent can LOG an outbound interaction only when `Human Approved: true`
+- The agent CANNOT send emails or LinkedIn messages directly
+- The agent CANNOT bypass the approval requirement
+- Actual external outreach remains subject to Riajul's approval
 
 **Storage adapter (swappable):**
 - `MemoryAdapter` — In-memory (testing, no credentials needed) ✅ WORKING
 - `GoogleSheetsAdapter` — Google Sheets (production) ⚠️ Code complete, not live-tested
 
-**Status:** ✅ Code complete — ✅ 35/35 unit tests pass — 🔴 Google Sheets integration blocked (credentials required for live testing)
+**Status:** ✅ Agent integration complete — ✅ 71/71 tests pass — 🔴 Google Sheets integration blocked (credentials required for live testing)
 
 ---
 

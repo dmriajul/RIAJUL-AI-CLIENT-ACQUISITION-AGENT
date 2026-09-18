@@ -43,14 +43,40 @@ export * from './validation/constants.js';
 // Audit
 export { AuditLogger } from './audit/logger.js';
 
+// Tools (Agent Integration Layer)
+export { ToolExecutor } from './tools/executor.js';
+export { TOOL_SCHEMAS, getAllToolSchemas, getToolSchema } from './tools/schemas.js';
+
 /**
  * Create a CRM instance with in-memory storage (for testing)
+ * Note: This is async because ESM requires dynamic imports
  */
-export function createTestCRM() {
-  const { MemoryAdapter } = require('./storage/memory.js');
-  const { CRMService } = require('./service/crm.js');
+export async function createTestCRM() {
+  const { MemoryAdapter } = await import('./storage/memory.js');
+  const { CRMService } = await import('./service/crm.js');
   const storage = new MemoryAdapter();
   return new CRMService(storage);
+}
+
+/**
+ * Create a test CRM synchronously (helper that uses already-imported classes)
+ */
+export function createTestCRMSync(MemoryAdapterClass, CRMServiceClass) {
+  const storage = new MemoryAdapterClass();
+  return new CRMServiceClass(storage);
+}
+
+/**
+ * Create a full tool executor with in-memory storage (for testing)
+ */
+export async function createTestToolExecutor() {
+  const { MemoryAdapter } = await import('./storage/memory.js');
+  const { CRMService } = await import('./service/crm.js');
+  const { ToolExecutor } = await import('./tools/executor.js');
+  
+  const storage = new MemoryAdapter();
+  const crm = new CRMService(storage);
+  return new ToolExecutor(crm);
 }
 
 /**
@@ -61,4 +87,17 @@ export async function createProductionCRM() {
   await storage.connect();
   const { CRMService } = await import('./service/crm.js');
   return new CRMService(storage);
+}
+
+/**
+ * Create a full tool executor with Google Sheets storage (for production)
+ */
+export async function createProductionToolExecutor() {
+  const { CRMService } = await import('./service/crm.js');
+  const { ToolExecutor } = await import('./tools/executor.js');
+  
+  const storage = await createFromEnv();
+  await storage.connect();
+  const crm = new CRMService(storage);
+  return new ToolExecutor(crm);
 }
