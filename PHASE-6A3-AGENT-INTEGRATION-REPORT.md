@@ -1,28 +1,39 @@
-# Phase 6A.3 — Agent Integration Report
+# Phase 6A.3 — CRM Tool Execution Layer Report
 
 **Date:** 2026-09-18  
-**Commit:** TBD (will be updated after commit)  
+**Commit:** `685d170`  
 **Branch:** `arena/01a0afb9-riajul-ai-client-acquisition-a`  
-**Status:** ✅ Agent Integration Complete — ⚠️ Google Sheets still untested
+**Status:** ✅ CRM Tool Layer Complete — ❌ Model Runtime Not Implemented
+
+> **CORRECTION (runtime verification):** This report previously stated "Agent Integration Complete." This was misleading. What was built is a **CRM tool execution layer** — the infrastructure for an agent to call CRM tools — but **no actual AI model runtime exists** in this repository. See `PHASE-6A3-RUNTIME-VERIFICATION.md` for the honest assessment.
 
 ---
 
 ## Executive Summary
 
-Phase 6A.3 delivers the **actual runtime integration** between the AI agent and the CRM service. This is the critical missing piece identified in the Phase 6A.1 audit: the agent can now **call** CRM tools during its workflow, not just read about them.
+Phase 6A.3 delivers a **secure, tested CRM tool execution layer** that an AI agent can call to interact with the CRM. This is the infrastructure layer, not the agent itself.
 
 **What was built:**
-- 15 agent-callable CRM tools
+- 15 agent-callable CRM tools (schemas + handlers)
 - Secure tool executor/registry
-- Input validation against schemas
+- Input validation against JSON schemas
 - Structured error handling
 - 33 new integration tests (71 total, all passing)
-- Full end-to-end workflow test
+- Full end-to-end workflow test (using MemoryAdapter, no AI model)
 
-**What was NOT done:**
+**What was NOT built:**
+- AI model runtime (no OpenAI/Anthropic/etc. integration)
+- Agent orchestration layer
+- Model-generated tool calls
+- Tool result injection into model context
 - Google Sheets live testing (still requires credentials)
 - Automatic outreach (human approval still required)
-- Agent framework rewrite (minimal clean integration layer only)
+
+**Correct claim:**
+> "CRM tool execution layer is implemented and tested; model-runtime integration remains."
+
+**Incorrect claim:**
+> ~~"Agent → CRM integration is complete"~~
 
 ---
 

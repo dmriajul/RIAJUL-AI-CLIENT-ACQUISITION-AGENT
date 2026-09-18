@@ -125,18 +125,25 @@ You have access to the following knowledge modules:
 - **Architecture Validation:** 12 prospect state tests defined
 - **Status:** Architecture complete — implementation pending
 
-### Module 13 — Persistent CRM Layer (Phase 6A.3 — AGENT INTEGRATION COMPLETE)
+### Module 13 — Persistent CRM Layer (Phase 6A.3 — TOOL EXECUTION LAYER)
 - **Location:** `crm/`
 - **Runtime:** Node.js 22+ (ES modules)
-- **Test command:** `cd crm && npm test` — 71/71 tests pass (38 CRM + 33 tool integration)
+- **Test command:** `cd crm && npm test` — 71/71 tests pass (38 CRM + 33 tool layer)
 - **Migrate command:** `cd crm && node src/service/migration.js`
+
+**Status:**
+- ✅ CRM service: Fully functional, tested
+- ✅ Tool execution layer: 15 tools, tested, validated
+- ❌ Model runtime: NOT implemented (no AI provider, no orchestration)
+- ⚠️ Google Sheets: Untested (requires credentials)
 
 **Architecture:**
 ```
-Agent → ToolExecutor (crm/src/tools/executor.js)
-      → CRMService (crm/src/service/crm.js)
-      → StorageAdapter (crm/src/storage/adapter.js)
-      → MemoryAdapter | GoogleSheetsAdapter
+Agent Runtime (NOT IN REPOSITORY)
+  → ToolExecutor (crm/src/tools/executor.js) ← IMPLEMENTED
+    → CRMService (crm/src/service/crm.js)   ← IMPLEMENTED
+      → StorageAdapter                       ← IMPLEMENTED
+        → MemoryAdapter | GoogleSheetsAdapter
 ```
 
 **Agent-callable tools (15 registered, validated, tested):**
@@ -186,7 +193,9 @@ Agent calls tool → ToolExecutor.execute(toolName, args, actor)
 - `MemoryAdapter` — In-memory (testing, no credentials needed) ✅ WORKING
 - `GoogleSheetsAdapter` — Google Sheets (production) ⚠️ Code complete, not live-tested
 
-**Status:** ✅ Agent integration complete — ✅ 71/71 tests pass — 🔴 Google Sheets integration blocked (credentials required for live testing)
+**Status:** ✅ CRM + Tool Layer Complete — ❌ Model Runtime Not Implemented — ⚠️ Google Sheets untested
+
+**Note:** The tool execution layer is ready for an agent runtime to call. However, no actual AI model runtime exists in this repository. The tools can be called programmatically (as proven by 71 passing tests), but there is no AI model generating tool calls or receiving tool results. See `PHASE-6A3-RUNTIME-VERIFICATION.md` for details.
 
 ---
 
